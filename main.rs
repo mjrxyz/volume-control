@@ -9,23 +9,22 @@ fn main() {
     // You can find your keyboard event device path using the `ls /dev/input/` command.
     let device_path = "/dev/input/eventX"; // Replace X with the appropriate number
 
-    // Open the input event device
+
     let device = Device::open(&device_path).expect("Failed to open input device");
 
-    // Listen for key events
+
     loop {
-        // Read events from the device
+
         let events = device
             .events(ReadFlag::NORMAL)
             .expect("Failed to read input events");
-
-        // Handle each event
+        
         for event in events {
             match event.event_type {
                 EventType::EV_KEY => {
                     match event.value {
                         1 => {
-                            // Key press event
+
                             match event.code {
                                 evdev::enums::EV_KEY::KEY_VOLUMEUP => {
                                     println!("Volume Up key pressed");
@@ -39,7 +38,7 @@ fn main() {
                             }
                         }
                         0 => {
-                            // Key release event
+
                             match event.code {
                                 evdev::enums::EV_KEY::KEY_VOLUMEUP => {
                                     println!("Volume Up key released");
@@ -62,7 +61,7 @@ fn main() {
 }
 
 fn increase_volume() {
-    // Increase the volume using PulseAudio pactl command
+
     Command::new("pactl")
         .args(&["set-sink-volume", "@DEFAULT_SINK@", "+5%"])
         .spawn()
@@ -70,7 +69,7 @@ fn increase_volume() {
 }
 
 fn decrease_volume() {
-    // Decrease the volume using PulseAudio pactl command
+
     Command::new("pactl")
         .args(&["set-sink-volume", "@DEFAULT_SINK@", "-5%"])
         .spawn()
@@ -78,7 +77,7 @@ fn decrease_volume() {
 }
 
 fn stop_volume_action() {
-    // Placeholder for your key release logic
+    // Placeholder for key release logic
     println!("Stop volume action");
-// Add the volume release logic.
+
 }
